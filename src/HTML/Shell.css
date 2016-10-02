@@ -1,0 +1,128 @@
+/*
+ Created by Somesh Chatterjee.
+*/
+/* 
+    Created on : 29 May, 2016, 12:20:45 PM
+    Author     : somesh
+*/
+
+body {
+    font-family: "Helvetica Neue","Helvetica","Arial","sans-serif";
+    margin: 0px;
+}
+
+#ShellBody {
+    width: 100%;
+}
+
+#HeaderArea {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    padding: 0px;
+}
+
+iframe {
+    border: 0;
+}
+
+#HeaderArea {
+    background-color: #3c8dbc;
+    min-height: 50px;
+    height: 50px;
+}
+
+#LeftNavigation {
+    background-color: #333;
+    width: 230px;
+    min-height: 100%;
+    font-size: 14px;
+    display: inline-block;
+    color: white;
+    vertical-align: top;
+    height: 2000px;
+}
+
+#MainArea {
+    display: inline-block;
+}
+
+#MenuHeaderText {
+    font-size: 23px;
+    font-weight: bold;
+    display: inline-block;
+    transform: translate(30%, 0%);
+}
+#MenuCloser {
+    display: inline-block;
+    float: left;
+}
+
+
+
+.Hidden {
+    display: none;
+}
+
+.MenuBodySelected {
+    font-weight: bold;
+    color: aquamarine;
+}
+
+#MenuBody {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.TableHolder {
+    overflow: auto;
+}
+
+.InputForm {
+    overflow: auto;
+}
+
+.InputFormHeader {
+    text-align: center;
+}
+
+.InputFormLabel {
+    text-align: right;
+}
+
+.InputFormValue {
+    text-align: left;
+    width: 200px;
+}
+
+.InputFormSubmit {
+    text-align: center;
+}
+
+.InputFormError {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a {
+    cursor: pointer;
+    color: #3174c7;
+}
+
+.EditableComboBoxText {
+    margin-left: -203px;
+    width: 160px;
+}
+
+select {
+    height: 34px;
+}
