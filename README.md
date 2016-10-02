@@ -1,6 +1,6 @@
 # InventoryManager
-Uses view created in HTML, JavaScript and integrates it to a JavaFX backend
-View tables are created using - [DataTables](https://datatables.net)
+Uses view created in HTML, JavaScript and integrates it to a JavaFX backend.
+View tables are created using - [DataTables](https://datatables.net).
 
 The purpose of the code base is to try create an app which can be reused across platforms.
 To achieve this the following has been done:
