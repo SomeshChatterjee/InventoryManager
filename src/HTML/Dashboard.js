@@ -29,7 +29,13 @@ function Dashboard()
         };
         var dateColumnNumber = superLedgerTableData.TableHeader.indexOf(TableHeaderNames.DashboardSuperLedger.Date);
         FormHelper.SetupDataTableWrapperWithSort(superLedger, "", dateColumnNumber, "desc");        
+        SetupDatePickers();
     }
+    
+    function SetupDatePickers()
+    {
+        FormHelper.SetupDateRangePicker("#FromDateInput", "#ToDateInput", -30, 0);
+    }    
     
     function SetupDropdowns()
     {

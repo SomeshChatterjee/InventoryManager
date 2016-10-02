@@ -22,6 +22,44 @@ var FormHelper = (function ()
         $(componentId).datepicker({ dateFormat: dateFormat });
     }
     
+    function SetupDateRangePicker(fromDateId, toDateId, fromDateFromCurrentDate, toDateFromCurrentDate)
+    {
+        var from = $(fromDateId), to = $(toDateId);
+        from.datepicker({changeMonth: true, dateFormat: dateFormat});
+        to.datepicker({changeMonth: true, dateFormat: dateFormat});
+        SetEventHandlerForDateRangePicker(from, to, "minDate", fromDateFromCurrentDate);
+        SetEventHandlerForDateRangePicker(to, from, "maxDate", toDateFromCurrentDate);
+        from.trigger( "change" );
+        to.trigger( "change" );
+    }
+    
+    function SetEventHandlerForDateRangePicker(current, other, option, currentFromNow)
+    {  
+        current.on( "change", function() 
+            {
+                other.datepicker( "option", option, getDate( this ) );
+            });        
+            
+        if (currentFromNow !== 0)
+        {
+            current.datepicker( "setDate", currentFromNow);
+        }        
+    }
+    
+    function getDate( element ) 
+    {
+        var date;
+        try 
+        {
+            date = $.datepicker.parseDate( dateFormat, element.value );
+        } catch( error ) 
+        {
+            date = new Date();
+        }
+ 
+        return date;
+    }    
+    
     function SetupDataTableWrapper(infoTable, idForFieldEnablingHiddenColumns)
     {
         SetupDataTableWrapperWithSort(infoTable, idForFieldEnablingHiddenColumns, 0, "asc");
@@ -458,6 +496,7 @@ var FormHelper = (function ()
         GetDataValuesFromTable: GetDataValuesFromTable,
         GetDataValuesFromDoubleArray: GetDataValuesFromDoubleArray,
         SetupDatePicker: SetupDatePicker,
+        SetupDateRangePicker: SetupDateRangePicker,
         SetupDataTableWrapper: SetupDataTableWrapper,
         SetupDataTableWrapperWithSort: SetupDataTableWrapperWithSort,
         SetupDefaultValues: SetupDefaultValues,
