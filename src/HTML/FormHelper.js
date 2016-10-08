@@ -491,6 +491,33 @@ var FormHelper = (function ()
                 (!input.trim()));
     }
     
+    function SetupDateFilterOnTable(minDateId, maxDateId, rowSize, dateColumnNo)
+    {
+        $.fn.dataTable.ext.search.push(
+            function( settings, data, dataIndex ) {
+                if (data.length !== rowSize)
+                {
+                    return true;
+                }
+                var min = CheckIfValidDate($(minDateId).val());
+                min = min !== "" ? new Date(min) : "";
+                var max = CheckIfValidDate($(maxDateId).val());
+                max = max !== "" ? new Date(max) : "";
+                var rowDate = CheckIfValidDate(data[dateColumnNo]); // use data for the age column
+                rowDate = rowDate !== "" ? new Date(rowDate) : "";
+
+                if ( ( min === "" && max === "" ) ||
+                     ( min === "" && rowDate <= max ) ||
+                     ( min <= rowDate && max === "" ) ||
+                     ( min <= rowDate && rowDate <= max ) )
+                {
+                    return true;
+                }
+                return false;
+            }
+        );        
+    }
+    
     return {
         SetupDropdown : SetupDropdown,
         GetDataValuesFromTable: GetDataValuesFromTable,
@@ -510,7 +537,8 @@ var FormHelper = (function ()
         MergedArraySeperator: MergedArraySeperator,
         MergeArrayWithMultiValuesForCombinedFiled: MergeArrayWithMultiValuesForCombinedFiled,
         GetIndexOfValueFromTable: GetIndexOfValueFromTable,
-        CheckIfInputHasValue: CheckIfInputHasValue
+        CheckIfInputHasValue: CheckIfInputHasValue,
+        SetupDateFilterOnTable: SetupDateFilterOnTable
     };
     
 })();
