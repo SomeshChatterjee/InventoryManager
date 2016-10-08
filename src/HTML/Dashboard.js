@@ -3,12 +3,12 @@
  */
 
 function Dashboard()
-{
+{  
+    var dashboardTableId = "Dashboard";
+    var superLedgerTableId = "SuperLedger";    
     var _infoDashboard = new InfoDashboard();   
     this.Setup = function ()
     {
-        var dashboardTableId = "Dashboard";
-        var superLedgerTableId = "SuperLedger";
         var dashboardTableData = _infoDashboard.GetDashboardTableData();
         var superLedgerTableData = _infoDashboard.GetDashboardSuperLedgerTableData();
         DomFunctions.$("#DashboadDiv")[0].innerHTML = TableCreator.GetTable(dashboardTableData, dashboardTableId);
@@ -30,6 +30,7 @@ function Dashboard()
         var dateColumnNumber = superLedgerTableData.TableHeader.indexOf(TableHeaderNames.DashboardSuperLedger.Date);
         FormHelper.SetupDataTableWrapperWithSort(superLedger, "", dateColumnNumber, "desc");        
         SetupDatePickers();
+        SetupFilterOnLedger();
     }
     
     function SetupDatePickers()
@@ -60,7 +61,14 @@ function Dashboard()
     
     function TrySubmitForm()
     {
+        var table = $("#" + superLedgerTableId).DataTable();
+        table.draw();
         return false;
-    }    
+    }
+    
+    function SetupFilterOnLedger()
+    {
+        FormHelper.SetupDateFilterOnTable("#FromDateInput", "#ToDateInput", 8, 7)
+    }
     
 }
