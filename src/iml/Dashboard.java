@@ -3,6 +3,12 @@
  */
 package iml;
 
+import Logger.EventLogger;
+import Logger.EventLoggerCodes;
+import Logger.ExitProgram;
+import Logger.ViewLogger;
+import com.sun.javafx.webkit.WebConsoleListener;
+import iml.Database.DatabaseAccessor;
 import javafx.concurrent.Worker;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import netscape.javascript.JSObject;
 
 /**
  *
@@ -18,9 +23,14 @@ import netscape.javascript.JSObject;
  */
 public class Dashboard extends Application {
     
+    private EventLogger _eventLogger;
+    private static ViewLogger _viewLogger;
+    
     @Override
     public void start(Stage primaryStage) 
     {
+        _eventLogger = EventLogger.GetLogger();
+        
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
         webEngine.load(getClass().getResource("/HTML/Shell.html").toExternalForm());
@@ -30,27 +40,73 @@ public class Dashboard extends Application {
         
         Scene scene = new Scene(root, 300, 200);
         
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("IML");
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
+        AddHandlerForApplicationClose();        
         
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> 
         {
             if (newValue == Worker.State.SUCCEEDED)
             {
-                //webView.getEngine().executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
+                InitializeJavaBackend();
+            }
+            else
+            {
+                _eventLogger.LogToFile(EventLoggerCodes.Error, "Webview failed to initialize.");
             }
         }
-        );        
+        );     
     }
+
+    private void AddHandlerForApplicationClose()
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            @Override
+            public void run()
+            {
+                _eventLogger.LogToFile(EventLoggerCodes.Info, "Application closed.");
+            }
+        });
+    }
+
+    private void InitializeJavaBackend()
+    {
+        _eventLogger.LogToFile(EventLoggerCodes.Info, "Application launched.");
+        //webView.getEngine().executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
+    }
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) 
     {
-        launch(args);
+        try
+        {
+            SetupConsoleListener();
+            launch(args);
+        } catch (Exception e)
+        {
+            ExitProgram.ExitProgramWith("MainApplication", "Unhandled Exception", e);
+        }
+        
+    }
+
+    private static void SetupConsoleListener()
+    {
+        _viewLogger = ViewLogger.GetViewLogger();
+        WebConsoleListener ourConsoleListener = new WebConsoleListener()
+        {
+            @Override
+            public void messageAdded(WebView webView, String message, int lineNumber, String sourceId)
+            {
+                _viewLogger.LogToFile("Console: [" + sourceId + ":" + lineNumber + "] " + message);
+            }
+        };
+        com.sun.javafx.webkit.WebConsoleListener.setDefaultListener(ourConsoleListener);
     }
     
 }
