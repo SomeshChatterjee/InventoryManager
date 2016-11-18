@@ -51,6 +51,8 @@ public class Dashboard extends Application {
             if (newValue == Worker.State.SUCCEEDED)
             {
                 InitializeJavaBackend();
+                webEngine.setOnAlert(event -> DisplayMessages.DisplayAlert(event.getData()));
+                webEngine.setConfirmHandler(message -> DisplayMessages.DisplayConfirmation(message));
             }
             else
             {

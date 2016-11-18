@@ -11,6 +11,7 @@ var DataProvider = (function ()
     var _companyMasterTable = GetCompanyMasterTable();    
     var _transporterHeaderNames = TableHeaderNames.TransporterTableName;
     var _transporterTable = GetTransporterTable();        
+    var InvalidIndex = -1;
     
     function GetIncomingTable()
     {
@@ -32,6 +33,30 @@ var DataProvider = (function ()
         return GetTable(inputData, tableHeaders);        
     }
     
+    function SetIncomingValuesInTable(infoTable, newRow)
+    {
+        newRow = newRow.slice(0); // shallow copy of array so that updating newRow doesn't update i/p
+        var headerNames = TableHeaderNames.IncomingHeaderNames;
+        var tableHeader = infoTable.Data.TableHeader;
+        
+        var indexOfCompanyNameInNewRow = tableHeader.indexOf(headerNames.CompanyName);
+        var indexOfMOCInNewRow = tableHeader.indexOf(headerNames.MOC);
+        var indexOfQualityInNewRow = tableHeader.indexOf(headerNames.QualityCode);        
+        var indexOfTransporterNameInNewRow = tableHeader.indexOf(headerNames.TransporterName);        
+       
+        var matchingCompanyId = GetMatchingCompanyId(newRow, indexOfCompanyNameInNewRow);
+        var matchingMOCId = GetMatchingMOCId(newRow, indexOfMOCInNewRow, indexOfQualityInNewRow);
+        var matchingTransporterId = GetTransporterId(newRow, indexOfTransporterNameInNewRow);
+        
+        SubstituteValues(newRow, indexOfCompanyNameInNewRow, matchingCompanyId, 1);
+        SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
+        SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
+        
+        _dataProvider.SetIncomingData(newRow);
+    }
+    
+    
+    
     function GetOutgoingTable()
     {
         var inputData = _dataProvider.GetOutgoingData();
@@ -50,12 +75,40 @@ var DataProvider = (function ()
         return GetTable(inputData, tableHeaders);        
     }    
     
+    function SetOutgoingValuesInTable(infoTable, newRow)
+    {
+        newRow = newRow.slice(0); // shallow copy of array so that updating newRow doesn't update i/p
+        var headerNames = TableHeaderNames.OutgoingHeaderNames;
+        var tableHeader = infoTable.Data.TableHeader;
+        
+        var indexOfCompanyNameInNewRow = tableHeader.indexOf(headerNames.CompanyName);
+        var indexOfMOCInNewRow = tableHeader.indexOf(headerNames.MOC);
+        var indexOfQualityInNewRow = tableHeader.indexOf(headerNames.QualityCode);        
+        var indexOfTransporterNameInNewRow = tableHeader.indexOf(headerNames.TransporterName);        
+       
+        var matchingCompanyId = GetMatchingCompanyId(newRow, indexOfCompanyNameInNewRow);
+        var matchingMOCId = GetMatchingMOCId(newRow, indexOfMOCInNewRow, indexOfQualityInNewRow);
+        var matchingTransporterId = GetTransporterId(newRow, indexOfTransporterNameInNewRow);
+        
+        SubstituteValues(newRow, indexOfCompanyNameInNewRow, matchingCompanyId, 1);
+        SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
+        SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
+        
+        _dataProvider.SetOutgoingData(newRow);
+    }    
+    
     function GetCompanyMasterTable()
     {
         var headerNames = TableHeaderNames.CompanyMasterTableName;
         var inputData = _dataProvider.GetCompanyMaster();
         return GetTable(inputData, [headerNames.ID, headerNames.CompanyName, headerNames.CompanyAddress, headerNames.Contact]);        
     }
+    
+    function SetCompanyMasterValuesInTable(newRow)
+    {       
+        _dataProvider.SetCompanyMasterData(newRow);
+        _companyMasterTable = GetCompanyMasterTable();
+    }        
     
     function GetMOCAndQualityCodeTable()
     {
@@ -64,11 +117,23 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.MOC, headerNames.QualityCode]);                
     }
     
+    function SetMOCAndQualityCodeValuesInTable(newRow)
+    {       
+        _dataProvider.SetMOCAndQualityCodeData(newRow);
+        _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();
+    }            
+    
     function GetTransporterTable()
     {
         var headerNames = TableHeaderNames.TransporterTableName;
         var inputData = _dataProvider.GetTransporterDetails();
         return GetTable(inputData, [headerNames.ID, headerNames.TransporterName, headerNames.TransporterAddress, headerNames.Contact]);                        
+    }
+    
+    function SetTransporterValuesInTable(newRow)
+    {       
+        _dataProvider.SetTransporterData(newRow);
+        _transporterTable = GetTransporterTable();
     }
     
     function GetTable(inputData, header)
@@ -98,22 +163,37 @@ var DataProvider = (function ()
     }    
     
     function MergeData(destTable, foreignKey, sourceTable, key, columnsToAdd)
-    {
+    {     
         for (var i = 0; i < destTable.length; i++)
         {
+            var found = false;
+            var foundJ = InvalidIndex;            
             for (var j = 0; j < sourceTable.length; j++)
             {
                 if (destTable[i][foreignKey] === sourceTable[j][key])
                 {
-                    destTable[i].splice(foreignKey, 1, sourceTable[j][columnsToAdd[0]]);
-                    for (var k = 1; k < columnsToAdd.length; k++)
-                    {
-                        destTable[i].splice(foreignKey + k, 0, sourceTable[j][columnsToAdd[k]]);
-                    }
+                    found = true;
+                    foundJ = j;
                     break;
                 }
             }
-        }
+            if (found)
+            {
+                destTable[i].splice(foreignKey, 1, sourceTable[foundJ][columnsToAdd[0]]);
+                for (var k = 1; k < columnsToAdd.length; k++)
+                {
+                    destTable[i].splice(foreignKey + k, 0, sourceTable[foundJ][columnsToAdd[k]]);
+                }
+            }    
+            else
+            {
+                destTable[i].splice(foreignKey, 1, Strings.NaText);
+                for (var k = 1; k < columnsToAdd.length; k++)
+                {
+                    destTable[i].splice(foreignKey + k, 0, Strings.NaText);
+                }            
+            }            
+        }        
     }
     
     function AddDataForLoadTest(data, noOfEntries)
@@ -187,12 +267,71 @@ var DataProvider = (function ()
         return result;        
     };
     
+    function GetMatchingID(valueToSearch, values, indexInValuesTable, indexToReturn)
+    {
+        for (var i = 0; i < values.length; ++i)
+        {
+            var row = values[i];
+            if (valueToSearch === row[indexInValuesTable])
+            {
+                return row[indexToReturn];
+            }
+        }
+        return InvalidIndex;
+    }
+    
+    function GetMatchingMOCId(newRow, indexOfMOCInNewRow, indexOfQualityInNewRow)
+    {
+        var mocData = _dataProvider.GetMOCAndQualityCode();     
+        
+        var MOC = newRow[indexOfMOCInNewRow];
+        var quality = newRow[indexOfQualityInNewRow];
+        for (var i = 0; i < mocData.length; i++)
+        {
+            if (MOC === mocData[1] && quality === mocData[2])
+            {
+                return mocData[0];
+            }
+        }
+        return InvalidIndex;
+    }
+    
+    function GetMatchingCompanyId(newRow, indexOfCompanyNameInNewRow)
+    {
+        var companyData = _dataProvider.GetCompanyMaster();
+
+        var indexOfCompanyNamesInCompanyTable = 1;
+        var indexOfIDsInCompanyTable = 0;
+        var companyNameInNewRow = newRow[indexOfCompanyNameInNewRow];
+        return GetMatchingID(companyNameInNewRow, companyData, indexOfCompanyNamesInCompanyTable, indexOfIDsInCompanyTable);        
+    }
+    
+    function GetTransporterId(newRow, indexOfTransporterNameInNewRow)
+    {
+        var transporterData = _dataProvider.GetTransporterDetails();
+        var indexOfTransporterNamesInTable = 1;
+        var indexOfIDsInTable = 0;
+        var transporterNameInNewRow = newRow[indexOfTransporterNameInNewRow];
+        return GetMatchingID(transporterNameInNewRow, transporterData, indexOfTransporterNamesInTable, indexOfIDsInTable);                
+    }
+    
+    function SubstituteValues(row, indexInRow, valueToSubstitute, noOfValuesToRemove)
+    {
+        row[indexInRow] = valueToSubstitute;
+        row.splice(indexInRow + 1, noOfValuesToRemove);        
+    }
+    
     return {
         GetIncomingTable: GetIncomingTable,
         GetOutgoingTable: GetOutgoingTable,
         GetCompanyMasterTable: _companyMasterTable,
         GetMOCAndQualityCodeTable: _mocAndQualityCodeTable,
         GetTransporterTable: _transporterTable,
+        SetIncomingValuesInTable: SetIncomingValuesInTable,
+        SetOutgoingValuesInTable: SetOutgoingValuesInTable,
+        SetCompanyMasterValuesInTable: SetCompanyMasterValuesInTable,
+        SetMOCAndQualityCodeValuesInTable: SetMOCAndQualityCodeValuesInTable,
+        SetTransporterValuesInTable: SetTransporterValuesInTable,
         GetMOCAndQualityValuesIndex: GetMOCAndQualityValuesIndex,
         GetMOCAndQualityValues: GetMOCAndQualityValues,
         GetCompanyValuesIndex: GetCompanyValuesIndex,

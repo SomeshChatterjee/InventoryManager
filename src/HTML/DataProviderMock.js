@@ -4,25 +4,7 @@
 
 
 var DataProviderMock = (function ()
-{
-    function GetDashboardData()
-    {
-        var data = [];
-        var row1 = ["100 MESH (HD)","42", "Jun 28, 2016", "CH NO 1922",  "361", "LoomNo1"];
-        var row2 = ["150 MESH",     "43", "Jun 23, 2016", "CH NO 1902",  "361", "LoomNo56"];
-        var row3 = ["180 MESH",     "44", "Jun 20, 2016", "CH NO 922",   "31",  "LoomNo78"];
-        var row4 = ["100 MESH (HD)","45", "Jan 25, 2016", "CH NO 2016",  "3325","LoomNo0"];
-        var row5 = ["100 MESH",     "46", "Jan 24, 2016", "CH NO 19",    "31",  "LoomNo8"];
-        
-        data.push(row1);
-        data.push(row2);
-        data.push(row3);
-        data.push(row4);
-        data.push(row5);
-        
-        return data;
-    } 
-    
+{    
     function GetIncomingData()
     {
         var data = [];
@@ -113,13 +95,47 @@ var DataProviderMock = (function ()
         return data;                       
     }
     
+    function SetIncomingData(newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function SetOutgoingData(newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function SetCompanyMasterData(newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function SetMOCAndQualityCodeData(newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function SetTransporterValuesInTable(newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function LogWarningMessage()
+    {
+        console.warn("Using mock data source. No data saved.");
+    }
+    
     return {
-        GetDashboardData : GetDashboardData,
         GetIncomingData : GetIncomingData,
         GetCompanyMaster: GetCompanyMaster,
         GetTransporterDetails: GetTransporterDetails,
         GetOutgoingData: GetOutgoingData,
-        GetMOCAndQualityCode: GetMOCAndQualityCode
+        GetMOCAndQualityCode: GetMOCAndQualityCode,
+        SetIncomingData: SetIncomingData,
+        SetOutgoingData: SetOutgoingData,
+        SetCompanyMasterData: SetCompanyMasterData,
+        SetMOCAndQualityCodeData: SetMOCAndQualityCodeData,
+        SetTransporterValuesInTable: SetTransporterValuesInTable
     };
     
 })();

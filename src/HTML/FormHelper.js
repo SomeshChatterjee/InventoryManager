@@ -4,7 +4,7 @@
 
 var FormHelper = (function ()
 {  
-    var NaText = "N/A";
+    var NaText = Strings.NaText;
     var dateFormat = 'M d, yy';
     var MergedArraySeperator = " -- ";
     

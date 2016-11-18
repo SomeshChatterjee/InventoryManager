@@ -7,7 +7,6 @@ import Logger.EventLogger;
 import Logger.EventLoggerCodes;
 import iml.Database.Codes.DatabaseName;
 import iml.Database.TableStrategies.ITableStrategy;
-import java.util.List;
 
 /**
  *
@@ -32,7 +31,7 @@ public class TableManager
         _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, _tableStrategy.CreateTableQuery(), null);
     }
     
-    public void CreateRecord(List<Object> values)
+    public void CreateRecord(Object[] values)
     {
         String query = _tableStrategy.CreateRecordQuery(values);
         if (query.equals("") == false)
@@ -42,13 +41,13 @@ public class TableManager
         }
     }
     
-    public List<List<Object>> ReadRecords()
+    public Object[][] ReadRecords()
     {
         _eventLogger.LogToFile(EventLoggerCodes.Info, "Reading values from table: " + _tableStrategy.GetTableName());
         return _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, _tableStrategy.ReadQuery(), _tableStrategy);
     }
     
-    public void UpdateRecord(List<Object> values)
+    public void UpdateRecord(Object[] values)
     {
         String query = _tableStrategy.UpdateQuery(values);
         if (query.equals("") == false)
