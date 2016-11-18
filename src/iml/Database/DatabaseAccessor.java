@@ -10,7 +10,6 @@ import Logger.EventLoggerCodes;
 import iml.Database.Codes.DatabaseName;
 import iml.Database.TableStrategies.ITableStrategy;
 import java.sql.*;
-import java.util.List;
 /**
  *
  * @author somesh
@@ -50,11 +49,11 @@ public class DatabaseAccessor
         return c;
     }
     
-    public List<List<Object>> ExecuteQueryWithResult(DatabaseName databaseName, String query, ITableStrategy tableStrategy)
+    public Object[][] ExecuteQueryWithResult(DatabaseName databaseName, String query, ITableStrategy tableStrategy)
     {
         Connection connection = OpenDatabase(databaseName);
         Statement statement;
-        List<List<Object>> result = null;
+        Object[][] result = null;
         try
         {
             statement = connection.createStatement();
@@ -72,9 +71,9 @@ public class DatabaseAccessor
         return result;
     }
 
-    private List<List<Object>> GetValuesFromResultSet(ITableStrategy tableStrategy, ResultSet resultSet)
+    private Object[][] GetValuesFromResultSet(ITableStrategy tableStrategy, ResultSet resultSet)
     {
-        List<List<Object>> result = null;
+        Object[][] result = null;
         if (tableStrategy != null)
         {
             result = tableStrategy.GetValuesFromResultSet(resultSet);

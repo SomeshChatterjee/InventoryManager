@@ -3,8 +3,8 @@
  */
 package Logger;
 
+import iml.DisplayMessages;
 import java.util.logging.Level;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,12 +12,12 @@ import javax.swing.JOptionPane;
  */
 public class ExitProgram
 {
-    private static EventLogger _eventLogger = EventLogger.GetLogger();
+    private static final EventLogger _eventLogger = EventLogger.GetLogger();
     public static void ExitProgramWith(String className, String exceptionMessage, Exception ex)
     {
         java.util.logging.Logger.getLogger(className).log(Level.SEVERE, exceptionMessage, ex);
         _eventLogger.LogToFile(EventLoggerCodes.Error, exceptionMessage + "\n" + ex);
-        JOptionPane.showMessageDialog(null, exceptionMessage + "\n" + ex);
+        DisplayMessages.DisplayAlert(exceptionMessage + "\n" + ex);
         System.exit(0);
     }
 }

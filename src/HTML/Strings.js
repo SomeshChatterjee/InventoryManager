@@ -12,8 +12,9 @@ var Strings = (function ()
     var DuplicateEntryForTransporter = "An entry with this data already exists. \nFor an entry to be unique it must have an unique transporter name. \n\tDuplicate of ID: ";
     var CompanyNameNotDefined = "You need to have at-least the company name defined.";
     var TransporterNameNotDefined = "You need to have at-least the transporter name defined.";
-    var SuccessfulSubmit = "Transaction is successfully added. ID: ";
+    var SuccessfulSubmit = "Transaction is successfully added/updated. ID: ";
     var EitherMOCOrQualityCodeNotDefined = "You need to have both MOC & Quality Code defined.";
+    var NaText = "N/A";
     
     return {
         MocAndQualityNotDefined : MocAndQualityNotDefined,
@@ -25,6 +26,7 @@ var Strings = (function ()
         DuplicateEntryForTransporter: DuplicateEntryForTransporter,
         SuccessfulSubmit: SuccessfulSubmit,
         EitherMOCOrQualityCodeNotDefined: EitherMOCOrQualityCodeNotDefined,
-        DuplicateEntryForItemMaster: DuplicateEntryForItemMaster
+        DuplicateEntryForItemMaster: DuplicateEntryForItemMaster,
+        NaText: NaText
     };
 })();

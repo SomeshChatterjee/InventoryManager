@@ -147,6 +147,7 @@ function Incoming()
         newRow[_remarksIndex]= remarks;
         
         FormHelper.UpdateDataTableWith(_infoIncoming, newRow, userEnteredId);
+        _infoIncoming.SetIncomingData(_infoIncoming, newRow);
         SetupDropdowns();
         SetupForID(false);
         SetupEditableComboBox(false);
