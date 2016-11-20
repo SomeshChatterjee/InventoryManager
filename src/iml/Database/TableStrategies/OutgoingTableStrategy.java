@@ -15,13 +15,13 @@ import java.util.ArrayList;
  *
  * @author somesh
  */
-public class IncomingTableStrategy implements ITableStrategy
+public class OutgoingTableStrategy implements ITableStrategy
 {
-    private final int NumberOfColumns = 15;
+    private final int NumberOfColumns = 13;
     private final EventLogger _eventLogger;
-    private final TableNames TableName = TableNames.Incoming;
+    private final TableNames TableName = TableNames.Outgoing;
 
-    public IncomingTableStrategy()
+    public OutgoingTableStrategy()
     {
         _eventLogger = EventLogger.GetLogger();
     }
@@ -50,8 +50,6 @@ public class IncomingTableStrategy implements ITableStrategy
         query.append(ColumnNames.PieceNo).append(" TEXT, ");
         query.append(ColumnNames.Date).append(" TEXT, "); //SQLite does not support date time type.
         query.append(ColumnNames.TransporterId).append(" CHAR(8), ");
-        query.append(ColumnNames.InvoiceNo).append(" TEXT, ");
-        query.append(ColumnNames.InvoiceDate).append(" TEXT, ");
         query.append(ColumnNames.Remarks).append(" TEXT ");
         query.append(" ); ");
         return query.toString();
@@ -83,10 +81,8 @@ public class IncomingTableStrategy implements ITableStrategy
             query.append(ColumnNames.PieceNo).append(", ");
             query.append(ColumnNames.Date).append(", ");
             query.append(ColumnNames.TransporterId).append(", ");
-            query.append(ColumnNames.InvoiceNo).append(", ");
-            query.append(ColumnNames.InvoiceDate).append(", ");
             query.append(ColumnNames.Remarks).append(" ");
-            query.append(")");
+            query.append(")");            
             query.append(" VALUES (");
             query.append(" '").append(values[1]).append("', ");
             query.append(" '").append(values[2]).append("', ");
@@ -99,9 +95,7 @@ public class IncomingTableStrategy implements ITableStrategy
             query.append(" '").append(values[9]).append("', ");
             query.append(" '").append(values[10]).append("', ");
             query.append(" '").append(values[11]).append("', ");
-            query.append(" '").append(values[12]).append("', ");
-            query.append(" '").append(values[13]).append("', ");
-            query.append(" '").append(values[14]).append("' ");
+            query.append(" '").append(values[12]).append("' ");
             query.append(" ); ");
             result = query.toString();
         }
@@ -139,9 +133,7 @@ public class IncomingTableStrategy implements ITableStrategy
             query.append(ColumnNames.PieceNo).append(" = '").append(values[9]).append("', ");
             query.append(ColumnNames.Date).append(" = '").append(values[10]).append("', ");
             query.append(ColumnNames.TransporterId).append(" = '").append(values[11]).append("', ");
-            query.append(ColumnNames.InvoiceNo).append(" = '").append(values[12]).append("', ");
-            query.append(ColumnNames.InvoiceDate).append(" = '").append(values[13]).append("', ");
-            query.append(ColumnNames.Remarks).append(" = '").append(values[14]).append("' ");
+            query.append(ColumnNames.Remarks).append(" = '").append(values[12]).append("' ");
             query.append("WHERE ").append(ColumnNames.ID).append(" = ").append(id).append(";");
             result = query.toString();
         }
@@ -169,9 +161,7 @@ public class IncomingTableStrategy implements ITableStrategy
                 currentRow[9] = resultSet.getString(ColumnNames.PieceNo.toString());
                 currentRow[10] = resultSet.getString(ColumnNames.Date.toString());
                 currentRow[11] = resultSet.getString(ColumnNames.TransporterId.toString());
-                currentRow[12] = resultSet.getString(ColumnNames.InvoiceNo.toString());
-                currentRow[13] = resultSet.getString(ColumnNames.InvoiceDate.toString());
-                currentRow[14] = resultSet.getString(ColumnNames.Remarks.toString());
+                currentRow[12] = resultSet.getString(ColumnNames.Remarks.toString());
                 result.add(currentRow);
             }
         } catch (Exception ex)
@@ -191,6 +181,5 @@ public class IncomingTableStrategy implements ITableStrategy
             valuesInString += value + " ";
         }
         return valuesInString;
-    }    
-    
+    }        
 }

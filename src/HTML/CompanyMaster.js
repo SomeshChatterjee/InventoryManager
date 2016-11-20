@@ -20,6 +20,7 @@ function CompanyMaster()
         SetupForID(true);        
         FormHelper.SetupDefaultValues(true);
         FormHelper.SetupDataTableWrapper(_infoCompanyMaster, "");
+        FormHelper.RedrawTables("#" + _infoCompanyMaster.TableId);
     }
     
     function SetupSubmit()
@@ -142,5 +143,4 @@ function CompanyMaster()
         FormHelper.SetupDefaultValues(false);
         $("#CompanyMasterIDInput").attr("disabled", true);  
     }    
-    
 }

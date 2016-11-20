@@ -33,6 +33,13 @@
         <script src="FormHelper.js" type="text/javascript"></script>
         <script src="InfoItemMaster.js" type="text/javascript"></script>
         <script src="ItemMaster.js" type="text/javascript"></script>
+        <script>
+            function InitializationOfJavaFXDone() 
+            {
+                var transporter = new ItemMaster();
+                transporter.Setup();
+            }
+        </script>        
     </head>
     <body>
         <div id="ItemMasterInputDiv" class="InputForm">
@@ -55,9 +62,5 @@
         <br>
         <br>
         <div id="Temp" class="TableHolder">Howdi!</div>
-        <script>
-            var transporter = new ItemMaster();
-            transporter.Setup();
-        </script>
     </body>
 </html>

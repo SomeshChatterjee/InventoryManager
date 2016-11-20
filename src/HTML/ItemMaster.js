@@ -20,6 +20,7 @@ function ItemMaster()
         SetupForID(true);        
         FormHelper.SetupDefaultValues(true);
         FormHelper.SetupDataTableWrapper(_infoItemMaster, "");
+        FormHelper.RedrawTables("#" + _infoItemMaster.TableId);
     }
     
     function SetupDropdowns()

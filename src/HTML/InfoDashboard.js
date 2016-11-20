@@ -137,6 +137,10 @@ function InfoDashboard()
         for (var i = 0; i < tableData.length; i++)
         {
             var row = tableData[i];
+            if (row.constructor !== Array)
+            {
+                return dictionary;
+            }            
             var moc = row[indexOfMOC];
             var quality = row[indexOfQuality];
             var width = row[indexOfWidth];

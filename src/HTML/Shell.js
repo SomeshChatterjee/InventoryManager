@@ -3,6 +3,27 @@
  */
 var ShellFunctions = (function ()
 {
+    function pageX(elem) 
+    {
+        return elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;
+    }                
+
+    function resizeIframe() 
+    {
+        var dashboard = DomFunctions.$("#Dashboard")[0];
+        var header = DomFunctions.$("#HeaderArea")[0];
+        var menu = DomFunctions.$("#LeftNavigation")[0];
+        dashboard.style.maxHeight = menu.scrollHeight + "px";
+        dashboard.style.maxWidth = header.scrollWidth - menu.scrollWidth + "px";
+        dashboard.style.height = menu.scrollHeight + "px";
+        dashboard.style.width = header.scrollWidth - menu.scrollWidth + "px";
+    }              
+    function InitializationOfJavaFXDone() 
+    {
+        RegisterEventHandlers();
+        SetDefaultPage();
+    }                
+    
     var MenuExpanderCloser = ["#MenuExpander", "#MenuCloser"];
     var MenuItemSelector = ["#MenuBodyDasboard", "#MenuBodyIncoming", "#MenuBodyOutgoing", "#MenuBodyCompanyMaster", "#MenuBodyTransporter", "#MenuBodyItemMaster"];
     
@@ -31,6 +52,7 @@ var ShellFunctions = (function ()
         DomFunctions.addClass("#MenuExpander", "Hidden");
         var navigation = DomFunctions.$("#LeftNavigation")[0];
         navigation.style.width = "230px";
+        resizeIframe();
     }
     
     function CloseMenu(e)
@@ -40,6 +62,7 @@ var ShellFunctions = (function ()
         DomFunctions.removeClass("#MenuExpander", "Hidden");        
         var navigation = DomFunctions.$("#LeftNavigation")[0];
         navigation.style.width = "30px";
+        resizeIframe();
     }
     
     function ShowMenuBodyDasboard(e)
@@ -99,21 +122,12 @@ var ShellFunctions = (function ()
         var dashboard = DomFunctions.$("#Dashboard")[0];
         dashboard.src = address;
         dashboard.onload = function () {
-            SetSize(dashboard);
+            resizeIframe();
+            document.getElementById("Dashboard").contentWindow.InitializationOfJavaFXDone();
         };
-        function SetSize (dashboard)
-        {
-            var header = DomFunctions.$("#HeaderArea")[0];
-            var menu = DomFunctions.$("#LeftNavigation")[0];
-            dashboard.style.maxHeight = menu.scrollHeight + "px";
-            dashboard.style.maxWidth = header.scrollWidth - menu.scrollWidth + "px";
-            dashboard.style.height = menu.scrollHeight + "px";
-            dashboard.style.width = header.scrollWidth - menu.scrollWidth + "px";
-        };                
     }
     
     return {
-        RegisterEventHandlers : RegisterEventHandlers,
-        SetDefaultPage: SetDefaultPage
+        InitializationOfJavaFXDone: InitializationOfJavaFXDone
     };
 })();

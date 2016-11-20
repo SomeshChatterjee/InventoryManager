@@ -518,6 +518,12 @@ var FormHelper = (function ()
         );        
     }
     
+    function RedrawTables(tableId)
+    {
+        var table = $(tableId).DataTable();
+        table.draw();
+    };    
+    
     return {
         SetupDropdown : SetupDropdown,
         GetDataValuesFromTable: GetDataValuesFromTable,
@@ -538,7 +544,8 @@ var FormHelper = (function ()
         MergeArrayWithMultiValuesForCombinedFiled: MergeArrayWithMultiValuesForCombinedFiled,
         GetIndexOfValueFromTable: GetIndexOfValueFromTable,
         CheckIfInputHasValue: CheckIfInputHasValue,
-        SetupDateFilterOnTable: SetupDateFilterOnTable
+        SetupDateFilterOnTable: SetupDateFilterOnTable,
+        RedrawTables: RedrawTables
     };
     
 })();

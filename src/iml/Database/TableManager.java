@@ -16,43 +16,40 @@ public class TableManager
 {
     private final DatabaseAccessor _databaseAccessor;
     private final EventLogger _eventLogger;
-    private final ITableStrategy _tableStrategy;
 
-    public TableManager(ITableStrategy tableStrategy)
+    public TableManager()
     {
         _databaseAccessor = DatabaseAccessor.GetDatabaseAccessor();
         _eventLogger = EventLogger.GetLogger();
-        _tableStrategy = tableStrategy;
-        CreateTableIfNotExist();
     }
     
-    private void CreateTableIfNotExist()
+    public void CreateTableIfNotExist(ITableStrategy tableStrategy)
     {
-        _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, _tableStrategy.CreateTableQuery(), null);
+        _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, tableStrategy.CreateTableQuery(), null);
     }
     
-    public void CreateRecord(Object[] values)
+    public void CreateRecord(ITableStrategy tableStrategy, Object[] values)
     {
-        String query = _tableStrategy.CreateRecordQuery(values);
+        String query = tableStrategy.CreateRecordQuery(values);
         if (query.equals("") == false)
         {
-            _eventLogger.LogToFile(EventLoggerCodes.Info, "Creating a new record in" + _tableStrategy.GetTableName());
+            _eventLogger.LogToFile(EventLoggerCodes.Info, "Creating a new record in" + tableStrategy.GetTableName());
             _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, query, null);
         }
     }
     
-    public Object[][] ReadRecords()
+    public Object[][] ReadRecords(ITableStrategy tableStrategy)
     {
-        _eventLogger.LogToFile(EventLoggerCodes.Info, "Reading values from table: " + _tableStrategy.GetTableName());
-        return _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, _tableStrategy.ReadQuery(), _tableStrategy);
+        _eventLogger.LogToFile(EventLoggerCodes.Info, "Reading values from table: " + tableStrategy.GetTableName());
+        return _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, tableStrategy.ReadQuery(), tableStrategy);
     }
     
-    public void UpdateRecord(Object[] values)
+    public void UpdateRecord(ITableStrategy tableStrategy, int id, Object[] values)
     {
-        String query = _tableStrategy.UpdateQuery(values);
+        String query = tableStrategy.UpdateQuery(id, values);
         if (query.equals("") == false)
         {
-            _eventLogger.LogToFile(EventLoggerCodes.Info, "Updating record in table: "+ _tableStrategy.GetTableName());
+            _eventLogger.LogToFile(EventLoggerCodes.Info, "Updating record in table: "+ tableStrategy.GetTableName());
             _databaseAccessor.ExecuteQueryWithResult(DatabaseName.IML, query, null);
         }
     }

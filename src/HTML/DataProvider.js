@@ -4,6 +4,7 @@
 
 var DataProvider = (function ()
 {
+    //var _dataProvider = parent.DataProviderSQLite;
     var _dataProvider = DataProviderMock;
     var _mocHeaderNames = TableHeaderNames.MOCAndQualityCodeHeaderName;
     var _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();    
@@ -52,7 +53,7 @@ var DataProvider = (function ()
         SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
         SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
         
-        _dataProvider.SetIncomingData(newRow);
+        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetIncomingData, _dataProvider.UpdateIncomingData);
     }
     
     
@@ -94,7 +95,7 @@ var DataProvider = (function ()
         SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
         SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
         
-        _dataProvider.SetOutgoingData(newRow);
+        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetOutgoingData, _dataProvider.UpdateOutgoingData);
     }    
     
     function GetCompanyMasterTable()
@@ -104,9 +105,9 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.CompanyName, headerNames.CompanyAddress, headerNames.Contact]);        
     }
     
-    function SetCompanyMasterValuesInTable(newRow)
+    function SetCompanyMasterValuesInTable(infoTable, newRow)
     {       
-        _dataProvider.SetCompanyMasterData(newRow);
+        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetCompanyMasterData, _dataProvider.UpdateCompanyMasterData);
         _companyMasterTable = GetCompanyMasterTable();
     }        
     
@@ -117,9 +118,9 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.MOC, headerNames.QualityCode]);                
     }
     
-    function SetMOCAndQualityCodeValuesInTable(newRow)
+    function SetMOCAndQualityCodeValuesInTable(infoTable, newRow)
     {       
-        _dataProvider.SetMOCAndQualityCodeData(newRow);
+        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetMOCAndQualityCodeData, _dataProvider.UpdateMOCAndQualityCodeData);
         _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();
     }            
     
@@ -130,23 +131,26 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.TransporterName, headerNames.TransporterAddress, headerNames.Contact]);                        
     }
     
-    function SetTransporterValuesInTable(newRow)
+    function SetTransporterValuesInTable(infoTable, newRow)
     {       
-        _dataProvider.SetTransporterData(newRow);
+        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetTransporterValuesInTable, _dataProvider.UpdateTransporterData);
         _transporterTable = GetTransporterTable();
     }
     
     function GetTable(inputData, header)
     {
         var numberOfRows = inputData.length;
-        var numberOfColumns = inputData[0].length;
         var table = new TableStructure(numberOfRows);
-        table.TableHeader = header;
-        for (var i = 0; i < numberOfRows; ++i)
+        if (numberOfRows > 0)
         {
-            for (var j = 0; j < numberOfColumns; ++j)
+            var numberOfColumns = inputData[0].length;
+            table.TableHeader = header;
+            for (var i = 0; i < numberOfRows; ++i)
             {
-                table.TableData[i][j] = inputData[i][j];
+                for (var j = 0; j < numberOfColumns; ++j)
+                {
+                    table.TableData[i][j] = inputData[i][j];
+                }
             }
         }
         return table;        
@@ -319,6 +323,20 @@ var DataProvider = (function ()
     {
         row[indexInRow] = valueToSubstitute;
         row.splice(indexInRow + 1, noOfValuesToRemove);        
+    }
+    
+    function AddOrUpdateTable(table, newRow, addFunction, updateFunction)
+    {
+        var lastIdInTable = table.Data.TableData.length;
+        var idOfNewRow = newRow[0];
+        if (lastIdInTable < idOfNewRow)
+        {
+            addFunction(newRow);
+        }
+        else
+        {
+            updateFunction(idOfNewRow, newRow);
+        }        
     }
     
     return {

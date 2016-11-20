@@ -63,7 +63,7 @@ public class FileLogger
     
     public void WriteToFile(Path fileName, String message)
     {
-        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss.SSS Z");
         Date date = new Date();
         message = dateFormat.format(date) + "-> " + message;
         

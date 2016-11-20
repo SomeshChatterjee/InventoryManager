@@ -2,8 +2,6 @@
  *  Created by Somesh Chatterjee.
  */
 package iml.Database;
-import Logger.DatabaseLogger;
-import Logger.DatabaseLoggerCodes;
 import Logger.ExitProgram;
 import Logger.EventLogger;
 import Logger.EventLoggerCodes;
@@ -17,13 +15,11 @@ import java.sql.*;
 public class DatabaseAccessor
 {
     private final EventLogger _eventLogger;
-    private final DatabaseLogger _databaseLogger;
     private static DatabaseAccessor _databaseAccessor;
 
     private DatabaseAccessor()
     {
         _eventLogger = EventLogger.GetLogger();
-        _databaseLogger = DatabaseLogger.GetDatabaseLogger();
     }
     
     public static DatabaseAccessor GetDatabaseAccessor()
@@ -57,16 +53,21 @@ public class DatabaseAccessor
         try
         {
             statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            result = GetValuesFromResultSet(tableStrategy, resultSet);
+            if (tableStrategy != null)
+            {
+                ResultSet resultSet = statement.executeQuery(query);
+                result = GetValuesFromResultSet(tableStrategy, resultSet);                
+            }
+            else
+            {
+                statement.executeUpdate(query);
+            }
             statement.close();
             connection.close();
-            _eventLogger.LogToFile(EventLoggerCodes.Info, "Database query ran successfully.");
-            _databaseLogger.LogToFile(DatabaseLoggerCodes.Success, query);
         } catch (Exception e)
         {
-            _databaseLogger.LogToFile(DatabaseLoggerCodes.Failure, query);
-            ExitProgram.ExitProgramWith(EventLogger.class.getName(), "Could not run query on database. \nCheck Database logs for details. ", e);
+            _eventLogger.LogToFile(EventLoggerCodes.Error, "Could not complete: " + query);
+            ExitProgram.ExitProgramWith(EventLogger.class.getName(), "Could not run query on database. \nCheck logs for details. ", e);
         }
         return result;
     }
