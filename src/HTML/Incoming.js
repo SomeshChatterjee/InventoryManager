@@ -43,6 +43,7 @@ function Incoming()
         FormHelper.SetupDefaultValues(true);
         SetupForID(true);
         FormHelper.SetupDataTableWrapper(_infoIncoming, "#ToggleColumnsForIncoming");
+        FormHelper.RedrawTables("#" + _infoIncoming.TableId);
     };
     
     function SetupSubmit()

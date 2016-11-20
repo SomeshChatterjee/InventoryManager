@@ -103,8 +103,11 @@
         </div>
         <div id="Temp" class="TableHolder"></div>        
         <script>
-            var incoming = new Outgoing();
-            incoming.Setup();
+            function InitializationOfJavaFXDone() 
+            {
+                var incoming = new Outgoing();
+                incoming.Setup();    
+            }
         </script>
     </body>
 </html>

@@ -31,6 +31,7 @@ function Dashboard()
         FormHelper.SetupDataTableWrapperWithSort(superLedger, "", dateColumnNumber, "desc");        
         SetupDatePickers();
         SetupFilterOnLedger();
+        RedrawTables(); // Wordaround for JavaFX webview. Columns mis-alligned otherwise.
     }
     
     function SetupDatePickers()
@@ -44,7 +45,7 @@ function Dashboard()
     
     function SetupSubmit()
     {
-        DomFunctions.$("#DashboardForm")[0].onsubmit = TrySubmitForm;
+        DomFunctions.$("#DashboardForm")[0].onsubmit = RedrawSuperLedgerTable;
     }    
     
     function SetupForID(addEventHandlers)
@@ -59,12 +60,22 @@ function Dashboard()
     {
     }    
     
-    function TrySubmitForm()
+    function RedrawSuperLedgerTable()
     {
-        var table = $("#" + superLedgerTableId).DataTable();
-        table.draw();
+        FormHelper.RedrawTables("#" + superLedgerTableId);
         return false;
     }
+    
+    function RedrawDashboardTable()
+    {
+        FormHelper.RedrawTables("#" + dashboardTableId);
+    }
+    
+    function RedrawTables()
+    {
+        RedrawDashboardTable();
+        RedrawSuperLedgerTable();
+    };
     
     function SetupFilterOnLedger()
     {

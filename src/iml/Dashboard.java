@@ -8,14 +8,17 @@ import Logger.EventLoggerCodes;
 import Logger.ExitProgram;
 import Logger.ViewLogger;
 import com.sun.javafx.webkit.WebConsoleListener;
-import iml.Database.DatabaseAccessor;
+import iml.Database.DataProviderSQLite;
 import javafx.concurrent.Worker;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 /**
  *
@@ -50,7 +53,7 @@ public class Dashboard extends Application {
         {
             if (newValue == Worker.State.SUCCEEDED)
             {
-                InitializeJavaBackend();
+                InitializeJavaBackend(webEngine);
                 webEngine.setOnAlert(event -> DisplayMessages.DisplayAlert(event.getData()));
                 webEngine.setConfirmHandler(message -> DisplayMessages.DisplayConfirmation(message));
             }
@@ -74,10 +77,13 @@ public class Dashboard extends Application {
         });
     }
 
-    private void InitializeJavaBackend()
+    private void InitializeJavaBackend(WebEngine webEngine)
     {
+        //webEngine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
         _eventLogger.LogToFile(EventLoggerCodes.Info, "Application launched.");
-        //webView.getEngine().executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
+        JSObject jsobj = (JSObject) webEngine.executeScript("window");
+        jsobj.setMember("DataProviderSQLite", new DataProviderSQLite());
+        webEngine.executeScript("ShellFunctions.InitializationOfJavaFXDone();");        
     }
     
 

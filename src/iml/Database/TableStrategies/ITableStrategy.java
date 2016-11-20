@@ -17,6 +17,6 @@ public interface ITableStrategy
     String CreateTableQuery();
     String CreateRecordQuery(Object[] values);
     String ReadQuery();
-    String UpdateQuery(Object[] values);
+    String UpdateQuery(int id, Object[] values);
     Object[][] GetValuesFromResultSet(ResultSet resultSet);
 }

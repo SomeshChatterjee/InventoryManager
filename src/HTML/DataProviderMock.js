@@ -120,6 +120,31 @@ var DataProviderMock = (function ()
         LogWarningMessage();
     }
     
+    function UpdateIncomingData(id, newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function UpdateOutgoingData(id, newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function UpdateCompanyMasterData(id, newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function UpdateMOCAndQualityCodeData(id, newRow)
+    {
+        LogWarningMessage();
+    }
+    
+    function UpdateTransporterData(id, newRow)
+    {
+        LogWarningMessage();
+    }
+    
     function LogWarningMessage()
     {
         console.warn("Using mock data source. No data saved.");
@@ -135,7 +160,12 @@ var DataProviderMock = (function ()
         SetOutgoingData: SetOutgoingData,
         SetCompanyMasterData: SetCompanyMasterData,
         SetMOCAndQualityCodeData: SetMOCAndQualityCodeData,
-        SetTransporterValuesInTable: SetTransporterValuesInTable
+        SetTransporterValuesInTable: SetTransporterValuesInTable,
+        UpdateIncomingData: UpdateIncomingData,
+        UpdateOutgoingData: UpdateOutgoingData,
+        UpdateCompanyMasterData: UpdateCompanyMasterData,
+        UpdateMOCAndQualityCodeData: UpdateMOCAndQualityCodeData,
+        UpdateTransporterData: UpdateTransporterData
     };
     
 })();

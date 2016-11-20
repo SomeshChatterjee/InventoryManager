@@ -41,6 +41,7 @@ function Outgoing()
         FormHelper.SetupDefaultValues(true);
         SetupForID(true);
         FormHelper.SetupDataTableWrapper(_infoOutgoing, "#ToggleColumnsForOutgoing");
+        FormHelper.RedrawTables("#" + _infoOutgoing.TableId);
     };
     
     function SetupSubmit()

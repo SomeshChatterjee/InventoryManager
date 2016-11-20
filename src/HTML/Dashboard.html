@@ -33,6 +33,13 @@
         <script src="FormHelper.js" type="text/javascript"></script>
         <script src="InfoDashboard.js" type="text/javascript"></script>
         <script src="Dashboard.js" type="text/javascript"></script>
+        <script>
+            function InitializationOfJavaFXDone() 
+            {
+                var transporter = new Dashboard();
+                transporter.Setup();                
+            }
+        </script>        
     </head>
     <body>
         <center><b>Dashboard</b></center>
@@ -49,9 +56,5 @@
             </center>
         </div>
         <div id="DashboadSupLedger" class="TableHolder">Howdi!</div>
-        <script>
-            var transporter = new Dashboard();
-            transporter.Setup();
-        </script>
     </body>
 </html>

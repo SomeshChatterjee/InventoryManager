@@ -20,6 +20,7 @@ function Transporter()
         SetupForID(true);        
         FormHelper.SetupDefaultValues(true);
         FormHelper.SetupDataTableWrapper(_infoTransporter, "");
+        FormHelper.RedrawTables("#" + _infoTransporter.TableId);
     }
     
     function SetupSubmit()
