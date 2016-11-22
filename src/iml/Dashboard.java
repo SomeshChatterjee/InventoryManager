@@ -36,6 +36,9 @@ public class Dashboard extends Application {
         
         WebView webView = new WebView();
         WebEngine webEngine = webView.getEngine();
+        JSObject jsobj = (JSObject) webEngine.executeScript("window");
+        jsobj.setMember("DataProviderSQLite", new DataProviderSQLite());        
+        
         webEngine.load(getClass().getResource("/HTML/Shell.html").toExternalForm());
         
         StackPane root = new StackPane();
@@ -81,9 +84,6 @@ public class Dashboard extends Application {
     {
         //webEngine.executeScript("if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');}"); 
         _eventLogger.LogToFile(EventLoggerCodes.Info, "Application launched.");
-        JSObject jsobj = (JSObject) webEngine.executeScript("window");
-        jsobj.setMember("DataProviderSQLite", new DataProviderSQLite());
-        webEngine.executeScript("ShellFunctions.InitializationOfJavaFXDone();");        
     }
     
 

@@ -5,7 +5,8 @@
 var DataProvider = (function ()
 {
     //var _dataProvider = parent.DataProviderSQLite;
-    var _dataProvider = DataProviderMock;
+    //var _dataProvider = DataProviderMock;
+    var _dataProvider = DataProviderNull;
     var _mocHeaderNames = TableHeaderNames.MOCAndQualityCodeHeaderName;
     var _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();    
     var _companyMasterHeaderNames = TableHeaderNames.CompanyMasterTableName;
@@ -140,11 +141,13 @@ var DataProvider = (function ()
     function GetTable(inputData, header)
     {
         var numberOfRows = inputData.length;
+        var initializeDummy = numberOfRows === 0 ? true : false;
+        numberOfRows = 1;
         var table = new TableStructure(numberOfRows);
-        if (numberOfRows > 0)
+        table.TableHeader = header;
+        var numberOfColumns = header.length;
+        if (initializeDummy === false)
         {
-            var numberOfColumns = inputData[0].length;
-            table.TableHeader = header;
             for (var i = 0; i < numberOfRows; ++i)
             {
                 for (var j = 0; j < numberOfColumns; ++j)
@@ -153,6 +156,14 @@ var DataProvider = (function ()
                 }
             }
         }
+        else
+        {
+            for (var j = 0; j < numberOfColumns; ++j)
+            {
+                table.TableData[0][j] = "";
+            }
+        }
+
         return table;        
     }
     
