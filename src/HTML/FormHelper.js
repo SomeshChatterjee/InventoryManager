@@ -101,7 +101,7 @@ var FormHelper = (function ()
                                 } );
                             } );
                         }                
-            });
+            }).draw(); // Wordaround for JavaFX webview. Columns mis-alligned otherwise.
             SetupAddRemoveColumns(infoTable, table, tableHeaders, idForFieldEnablingHiddenColumns);
         });
     }
@@ -518,12 +518,6 @@ var FormHelper = (function ()
         );        
     }
     
-    function RedrawTables(tableId)
-    {
-        var table = $(tableId).DataTable();
-        table.draw();
-    };    
-    
     return {
         SetupDropdown : SetupDropdown,
         GetDataValuesFromTable: GetDataValuesFromTable,
@@ -544,8 +538,7 @@ var FormHelper = (function ()
         MergeArrayWithMultiValuesForCombinedFiled: MergeArrayWithMultiValuesForCombinedFiled,
         GetIndexOfValueFromTable: GetIndexOfValueFromTable,
         CheckIfInputHasValue: CheckIfInputHasValue,
-        SetupDateFilterOnTable: SetupDateFilterOnTable,
-        RedrawTables: RedrawTables
+        SetupDateFilterOnTable: SetupDateFilterOnTable
     };
     
 })();

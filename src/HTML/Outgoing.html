@@ -25,7 +25,8 @@
         <script src="dom.js" type="text/javascript"></script>
         <script src="Strings.js" type="text/javascript"></script>
         <script src="TableHeaderNames.js" type="text/javascript"></script>
-        <script src="DataProviderMock.js" type="text/javascript"></script>        
+        <script src="DataProviderMock.js" type="text/javascript"></script>       
+        <script src="DataProviderNull.js" type="text/javascript"></script>
         <script src="DataProvider.js" type="text/javascript"></script>
         <script src="HTMLElement.js" type="text/javascript"></script>
         <script src="TableCreator.js" type="text/javascript"></script>
@@ -103,11 +104,8 @@
         </div>
         <div id="Temp" class="TableHolder"></div>        
         <script>
-            function InitializationOfJavaFXDone() 
-            {
-                var incoming = new Outgoing();
-                incoming.Setup();    
-            }
+            var incoming = new Outgoing();
+            incoming.Setup();    
         </script>
     </body>
 </html>

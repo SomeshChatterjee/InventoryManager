@@ -18,11 +18,6 @@ var ShellFunctions = (function ()
         dashboard.style.height = menu.scrollHeight + "px";
         dashboard.style.width = header.scrollWidth - menu.scrollWidth + "px";
     }              
-    function InitializationOfJavaFXDone() 
-    {
-        RegisterEventHandlers();
-        SetDefaultPage();
-    }                
     
     var MenuExpanderCloser = ["#MenuExpander", "#MenuCloser"];
     var MenuItemSelector = ["#MenuBodyDasboard", "#MenuBodyIncoming", "#MenuBodyOutgoing", "#MenuBodyCompanyMaster", "#MenuBodyTransporter", "#MenuBodyItemMaster"];
@@ -123,11 +118,11 @@ var ShellFunctions = (function ()
         dashboard.src = address;
         dashboard.onload = function () {
             resizeIframe();
-            document.getElementById("Dashboard").contentWindow.InitializationOfJavaFXDone();
         };
     }
     
     return {
-        InitializationOfJavaFXDone: InitializationOfJavaFXDone
+        RegisterEventHandlers: RegisterEventHandlers,
+        SetDefaultPage: SetDefaultPage
     };
 })();
