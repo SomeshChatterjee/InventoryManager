@@ -372,16 +372,19 @@ var FormHelper = (function ()
         for (var i = 0; i < arrayValues.length; ++i)
         {
             var row = arrayValues[i];
-            var value = "";
-            for (var j = 0; j < row.length; ++j)
+            if (row.length > 0 && row[0] !== Strings.Empty)
             {
-                value = value + "" + row[j];
-                if (j < row.length - 1)
+                var value = "";
+                for (var j = 0; j < row.length; ++j)
                 {
-                    value = value + "" +  MergedArraySeperator;                   
-                }
+                    value = value + "" + row[j];
+                    if (j < row.length - 1)
+                    {
+                        value = value + "" +  MergedArraySeperator;                   
+                    }
+                }                
+                resultArray.push(value);
             }
-            resultArray.push(value);
         }
         return resultArray;        
     }

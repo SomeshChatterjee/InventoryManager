@@ -15,6 +15,7 @@ var Strings = (function ()
     var SuccessfulSubmit = "Transaction is successfully added/updated. ID: ";
     var EitherMOCOrQualityCodeNotDefined = "You need to have both MOC & Quality Code defined.";
     var NaText = "N/A";
+    var Empty = "";
     
     return {
         MocAndQualityNotDefined : MocAndQualityNotDefined,
@@ -27,6 +28,7 @@ var Strings = (function ()
         SuccessfulSubmit: SuccessfulSubmit,
         EitherMOCOrQualityCodeNotDefined: EitherMOCOrQualityCodeNotDefined,
         DuplicateEntryForItemMaster: DuplicateEntryForItemMaster,
-        NaText: NaText
+        NaText: NaText,
+        Empty: Empty
     };
 })();

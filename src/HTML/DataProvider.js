@@ -4,9 +4,9 @@
 
 var DataProvider = (function ()
 {
-    //var _dataProvider = parent.DataProviderSQLite;
+    var _dataProvider = parent.DataProviderSQLite;
     //var _dataProvider = DataProviderMock;
-    var _dataProvider = DataProviderNull;
+    //var _dataProvider = DataProviderNull;
     var _mocHeaderNames = TableHeaderNames.MOCAndQualityCodeHeaderName;
     var _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();    
     var _companyMasterHeaderNames = TableHeaderNames.CompanyMasterTableName;
@@ -160,7 +160,7 @@ var DataProvider = (function ()
         {
             for (var j = 0; j < numberOfColumns; ++j)
             {
-                table.TableData[0][j] = "";
+                table.TableData[0][j] = Strings.Empty;
             }
         }
 
@@ -346,7 +346,8 @@ var DataProvider = (function ()
         }
         else
         {
-            updateFunction(idOfNewRow, newRow);
+            var valuesInString = DataParser.ConvertToString(newRow);
+            updateFunction(idOfNewRow, valuesInString);
         }        
     }
     

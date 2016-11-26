@@ -8,7 +8,9 @@ import iml.Database.TableStrategies.ITableStrategy;
 import iml.Database.TableStrategies.IncomingTableStrategy;
 import iml.Database.TableStrategies.MOCQualityStrategy;
 import iml.Database.TableStrategies.OutgoingTableStrategy;
+import iml.Database.TableStrategies.Parser;
 import iml.Database.TableStrategies.TransporterStrategy;
+import iml.DisplayMessages;
 
 /**
  *
@@ -88,28 +90,34 @@ public class DataProviderSQLite
         _tableManager.CreateRecord(_transporterTableStrategy, values);
     }
     
-    public void UpdateIncomingData(int id, Object[] values)
+    public void UpdateIncomingData(int id, String values)
     {
-        _tableManager.UpdateRecord(_incomingTableStrategy, id, values);
+        //_tableManager.UpdateRecord(_incomingTableStrategy, id, values);
     }
     
-    public void UpdateOutgoingData(int id, Object[] values)
+    public void UpdateOutgoingData(int id, String values)
     {
-        _tableManager.UpdateRecord(_outgoingTableStrategy, id, values);
+        //_tableManager.UpdateRecord(_outgoingTableStrategy, id, values);
     }
     
-    public void UpdateCompanyMasterData(int id, Object[] values)
+    public void UpdateCompanyMasterData(int id, String values)
     {
-        _tableManager.UpdateRecord(_companyMasterTableStrategy, id, values);
+        //_tableManager.UpdateRecord(_companyMasterTableStrategy, id, values);
     }
     
-    public void UpdateMOCAndQualityCodeData(int id, Object[] values)
+    public void UpdateMOCAndQualityCodeData(int id, String values)
     {
-        _tableManager.UpdateRecord(_mocQualityTableStrategy, id, values);
+        DisplayMessages.DisplayAlert("Finlly here!");
+        //_tableManager.UpdateRecord(_mocQualityTableStrategy, id, values);
     }
     
-    public void UpdateTransporterData(int id, Object[] values)
+    public void UpdateTransporterData(int id, String values)
     {
-        _tableManager.UpdateRecord(_transporterTableStrategy, id, values);
+        //_tableManager.UpdateRecord(_transporterTableStrategy, id, values);
     }    
+    
+    public String GetSeperator()
+    {
+        return Parser.Seperator;
+    }
 }

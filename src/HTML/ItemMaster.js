@@ -142,6 +142,7 @@ function ItemMaster()
         newRow[_qualityCodeIndex] = qualityCode;
         
         FormHelper.UpdateDataTableWith(_infoItemMaster, newRow, userEnteredId);
+        _infoItemMaster.SetItemMasterData(_infoItemMaster, newRow);
         SetupDropdowns();
         SetupForID(false);
         FormHelper.SetupDefaultValues(false);

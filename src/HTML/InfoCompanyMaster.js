@@ -17,4 +17,9 @@ function InfoCompanyMaster()
     {
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };    
+    
+    this.SetCompanyMasterData = function (infoCompanyMaster, newRow)
+    {
+        DataProvider.SetCompanyMasterValuesInTable(infoCompanyMaster, newRow);
+    };
 }
