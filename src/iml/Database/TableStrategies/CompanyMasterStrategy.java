@@ -5,11 +5,13 @@ package iml.Database.TableStrategies;
 
 import Logger.EventLogger;
 import Logger.EventLoggerCodes;
+import Logger.ExitProgram;
 import iml.Database.Codes.ColumnNames;
 import iml.Database.Codes.TableNames;
 import iml.DisplayMessages;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -127,6 +129,21 @@ public class CompanyMasterStrategy implements ITableStrategy
         }
         return result.toArray(new Object[result.size()][NumberOfColumns]);
     }
+    
+    @Override
+    public Object[] GetObjectArrayFromJSONArray(JSONArray jsonArray)
+    {
+        Object[] result = new Object[NumberOfColumns];
+        if (jsonArray.size() != NumberOfColumns)
+        {
+            ExitProgram.ExitProgramWith("CompanyMasterStrategy", "Count mismatch in GetObjectArrayFromJSONArray. Expected: " + NumberOfColumns + " but was " + jsonArray.size(), null);
+        }
+        result[0] = Integer.parseInt((String) jsonArray.get(0));
+        result[1] = (String) jsonArray.get(1);
+        result[2] = (String) jsonArray.get(2);
+        result[3] = (String) jsonArray.get(3);
+        return result;
+    }    
     
     private String ConvertValuesToString(Object[] values)
     {

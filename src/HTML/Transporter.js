@@ -137,8 +137,8 @@ function Transporter()
         newRow[_transporterAddressIndex] = companyAddress;
         newRow[_transporterContactIndex] = contact;
         
-        FormHelper.UpdateDataTableWith(_infoTransporter, newRow, userEnteredId);
-        _infoTransporter.SetTransporterData(_infoTransporter, newRow);
+        var newRowAdded = FormHelper.UpdateDataTableWith(_infoTransporter, newRow, userEnteredId);
+        _infoTransporter.SetTransporterData(newRowAdded, newRow);
         SetupForID(false);
         FormHelper.SetupDefaultValues(false);
         $("#TransporterIDInput").attr("disabled", true);  

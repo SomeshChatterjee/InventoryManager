@@ -3,30 +3,57 @@
  */
 package iml.Database.TableStrategies;
 
+import Logger.EventLogger;
+import Logger.EventLoggerCodes;
+import iml.DisplayMessages;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
+
 /**
  *
  * @author somesh
  */
 public class Parser
 {
-    public static final String Seperator = "!~~~!";
-    
-    public String[] ConvertToArray(String input)
+    EventLogger _eventLogger;
+
+    public Parser()
     {
-        return input.split(Seperator);
+        _eventLogger = EventLogger.GetLogger();
     }
     
-    public String ConvertToString(Object[] input)
+    public JSONArray ConvertToArray(String input)
     {
-        StringBuilder result = new StringBuilder();
+        Object result = null;
+        JSONParser parser = new JSONParser();
+       try
+       {
+           result = parser.parse(input);
+       } catch (ParseException ex)
+       {
+           DisplayMessages.DisplayAlert("Could not process the request. Check log files for details.");
+           _eventLogger.LogToFile(EventLoggerCodes.Error, "Could parse JSON: " + input);
+       }
+       return (JSONArray) result;
+    }
+    
+    public String ConvertToString(Object[][] input)
+    {
+        JSONArray result = new JSONArray();
         for (int i = 0; i < input.length; ++i)
         {
-            result.append(input[i]);
-            if (i < input.length - 1)
+            Object[] row = input[i];
+            JSONArray newRow = new JSONArray();
+            for (int j = 0; j < row.length; ++j)
             {
-                result.append(Seperator);
+                newRow.add(row[j]);
             }
+            result.add(newRow);
         }
-        return result.toString();
+        return result.toJSONString();
     }
 }

@@ -412,7 +412,7 @@ var FormHelper = (function ()
         return -1;
     }
     
-    function AddNewRow(infotable, newRow, id)
+    function AddNewRow(infotable, newRow, id, newRowAdded)
     {
         if (infotable.Data.TableData[0].length !== newRow.length)
         {
@@ -420,13 +420,13 @@ var FormHelper = (function ()
         }
         else
         {
-            var rowNumber = Number(id) - 1;
-            if (rowNumber === infotable.Data.TableData.length)
+            if (newRowAdded)
             {
                 infotable.Data.TableData.push(newRow);
             }
             else
             {
+                var rowNumber = Number(id) - 1;
                 infotable.Data.TableData[rowNumber] = newRow;
             }
         }
@@ -434,13 +434,14 @@ var FormHelper = (function ()
     
     function UpdateDataTableWith(infoTable, newRow, id)
     {
-        var lastId = infoTable.Data.TableData.length;
+        var lastId = infoTable.Data.TableData[infoTable.Data.TableData.length - 1][0];
+        var newRowAdded = ((lastId === "") || (id > lastId));
         
-        AddNewRow(infoTable, newRow, id);
+        AddNewRow(infoTable, newRow, id, newRowAdded);
         var table = $("#" + infoTable.TableId);
         var dataTable = table.DataTable();
         
-        if (id > lastId)
+        if (newRowAdded)
         {
             dataTable.row.add(newRow).draw(false);                
         }
@@ -467,6 +468,8 @@ var FormHelper = (function ()
                 select.val(preselectedValue);
             }
         });
+        
+        return newRowAdded;
     }
     
     function BindEventWith(eventName, idOfControl, action)

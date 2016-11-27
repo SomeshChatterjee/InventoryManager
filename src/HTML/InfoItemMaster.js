@@ -18,8 +18,8 @@ function InfoItemMaster()
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };
     
-    this.SetItemMasterData = function (infoItemMaster, newRow)
+    this.SetItemMasterData = function (newRowAdded, newRow)
     {
-        DataProvider.SetMOCAndQualityCodeValuesInTable(infoItemMaster, newRow);
+        DataProvider.SetMOCAndQualityCodeValuesInTable(newRowAdded, newRow);
     };
 }

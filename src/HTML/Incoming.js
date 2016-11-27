@@ -146,8 +146,8 @@ function Incoming()
         newRow[_invoiceDateIndex] = invoiceDate;
         newRow[_remarksIndex]= remarks;
         
-        FormHelper.UpdateDataTableWith(_infoIncoming, newRow, userEnteredId);
-        _infoIncoming.SetIncomingData(_infoIncoming, newRow);
+        var newRowAdded = FormHelper.UpdateDataTableWith(_infoIncoming, newRow, userEnteredId);
+        _infoIncoming.SetIncomingData(newRowAdded, newRow);
         SetupDropdowns();
         SetupForID(false);
         SetupEditableComboBox(false);

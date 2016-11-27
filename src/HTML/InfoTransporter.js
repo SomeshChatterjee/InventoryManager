@@ -18,8 +18,8 @@ function InfoTransporter()
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };    
     
-    this.SetTransporterData = function (infoTransporter, newRow)
+    this.SetTransporterData = function (newRowAdded, newRow)
     {
-        DataProvider.SetTransporterValuesInTable(infoTransporter, newRow);
+        DataProvider.SetTransporterValuesInTable(newRowAdded, newRow);
     };
 }

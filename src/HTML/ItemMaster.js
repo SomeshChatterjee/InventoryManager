@@ -141,8 +141,8 @@ function ItemMaster()
         newRow[_mocIndex] = moc;
         newRow[_qualityCodeIndex] = qualityCode;
         
-        FormHelper.UpdateDataTableWith(_infoItemMaster, newRow, userEnteredId);
-        _infoItemMaster.SetItemMasterData(_infoItemMaster, newRow);
+        var newRowAdded = FormHelper.UpdateDataTableWith(_infoItemMaster, newRow, userEnteredId);
+        _infoItemMaster.SetItemMasterData(newRowAdded, newRow);
         SetupDropdowns();
         SetupForID(false);
         FormHelper.SetupDefaultValues(false);

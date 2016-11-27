@@ -10,7 +10,6 @@ import iml.Database.TableStrategies.MOCQualityStrategy;
 import iml.Database.TableStrategies.OutgoingTableStrategy;
 import iml.Database.TableStrategies.Parser;
 import iml.Database.TableStrategies.TransporterStrategy;
-import iml.DisplayMessages;
 
 /**
  *
@@ -24,6 +23,7 @@ public class DataProviderSQLite
     private final ITableStrategy _companyMasterTableStrategy;
     private final ITableStrategy _transporterTableStrategy;
     private final ITableStrategy _mocQualityTableStrategy;
+    private final Parser _parser;
 
     public DataProviderSQLite()
     {
@@ -32,6 +32,7 @@ public class DataProviderSQLite
         _companyMasterTableStrategy = new CompanyMasterStrategy();
         _transporterTableStrategy = new TransporterStrategy();
         _mocQualityTableStrategy = new MOCQualityStrategy();
+        _parser = new Parser();
         _tableManager = new TableManager();
         _tableManager.CreateTableIfNotExist(_incomingTableStrategy);
         _tableManager.CreateTableIfNotExist(_outgoingTableStrategy);
@@ -40,84 +41,93 @@ public class DataProviderSQLite
         _tableManager.CreateTableIfNotExist(_mocQualityTableStrategy);
     }
 
-    public Object[][] GetIncomingData()
+    public String GetIncomingData()
     {
-        return _tableManager.ReadRecords(_incomingTableStrategy);
+        Object[][] result = _tableManager.ReadRecords(_incomingTableStrategy);
+        return _parser.ConvertToString(result);
     }
     
-    public Object[][] GetMOCAndQualityCode()
+    public String GetMOCAndQualityCode()
     {
-        return _tableManager.ReadRecords(_mocQualityTableStrategy);
+        Object[][] result = _tableManager.ReadRecords(_mocQualityTableStrategy);
+        return _parser.ConvertToString(result);
     }
     
-    public Object[][] GetOutgoingData()
+    public String GetOutgoingData()
     {
-        return _tableManager.ReadRecords(_outgoingTableStrategy);
+        Object[][] result = _tableManager.ReadRecords(_outgoingTableStrategy);
+        return _parser.ConvertToString(result);
     }
     
-    public Object[][] GetCompanyMaster()
+    public String GetCompanyMaster()
     {
-        return _tableManager.ReadRecords(_companyMasterTableStrategy);
+        Object[][] result = _tableManager.ReadRecords(_companyMasterTableStrategy);
+        return _parser.ConvertToString(result);
     }
 
-    public Object[][] GetTransporterDetails()
+    public String GetTransporterDetails()
     {
-        return _tableManager.ReadRecords(_transporterTableStrategy);
+        Object[][] result = _tableManager.ReadRecords(_transporterTableStrategy);
+        return _parser.ConvertToString(result);
     }
 
-    public void SetIncomingData(Object[] values)
+    public void SetIncomingData(String values)
     {
-        _tableManager.CreateRecord(_incomingTableStrategy, values);
+        Object[] valuesInJavaArray = _incomingTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.CreateRecord(_incomingTableStrategy, valuesInJavaArray);
     }
     
-    public void SetOutgoingData(Object[] values)
+    public void SetOutgoingData(String values)
     {
-        _tableManager.CreateRecord(_outgoingTableStrategy, values);
+        Object[] valuesInJavaArray = _outgoingTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.CreateRecord(_outgoingTableStrategy, valuesInJavaArray);
     }
     
-    public void SetCompanyMasterData(Object[] values)
+    public void SetCompanyMasterData(String values)
     {
-        _tableManager.CreateRecord(_companyMasterTableStrategy, values);
+        Object[] valuesInJavaArray = _companyMasterTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.CreateRecord(_companyMasterTableStrategy, valuesInJavaArray);
     }
     
-    public void SetMOCAndQualityCodeData(Object[] values)
+    public void SetMOCAndQualityCodeData(String values)
     {
-        _tableManager.CreateRecord(_mocQualityTableStrategy, values);
+        Object[] valuesInJavaArray = _mocQualityTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.CreateRecord(_mocQualityTableStrategy, valuesInJavaArray);
     }
     
-    public void SetTransporterValuesInTable(Object[] values)
+    public void SetTransporterValuesInTable(String values)
     {
-        _tableManager.CreateRecord(_transporterTableStrategy, values);
+        Object[] valuesInJavaArray = _transporterTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.CreateRecord(_transporterTableStrategy, valuesInJavaArray);
     }
     
     public void UpdateIncomingData(int id, String values)
     {
-        //_tableManager.UpdateRecord(_incomingTableStrategy, id, values);
+        Object[] valuesInJavaArray = _incomingTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.UpdateRecord(_incomingTableStrategy, id, valuesInJavaArray);
     }
     
     public void UpdateOutgoingData(int id, String values)
     {
-        //_tableManager.UpdateRecord(_outgoingTableStrategy, id, values);
+        Object[] valuesInJavaArray = _outgoingTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.UpdateRecord(_outgoingTableStrategy, id, valuesInJavaArray);
     }
     
     public void UpdateCompanyMasterData(int id, String values)
     {
-        //_tableManager.UpdateRecord(_companyMasterTableStrategy, id, values);
+        Object[] valuesInJavaArray = _companyMasterTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.UpdateRecord(_companyMasterTableStrategy, id, valuesInJavaArray);
     }
     
     public void UpdateMOCAndQualityCodeData(int id, String values)
     {
-        DisplayMessages.DisplayAlert("Finlly here!");
-        //_tableManager.UpdateRecord(_mocQualityTableStrategy, id, values);
+        Object[] valuesInJavaArray = _mocQualityTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.UpdateRecord(_mocQualityTableStrategy, id, valuesInJavaArray);
     }
     
     public void UpdateTransporterData(int id, String values)
     {
-        //_tableManager.UpdateRecord(_transporterTableStrategy, id, values);
+        Object[] valuesInJavaArray = _transporterTableStrategy.GetObjectArrayFromJSONArray(_parser.ConvertToArray(values));
+        _tableManager.UpdateRecord(_transporterTableStrategy, id, valuesInJavaArray);
     }    
-    
-    public String GetSeperator()
-    {
-        return Parser.Seperator;
-    }
 }

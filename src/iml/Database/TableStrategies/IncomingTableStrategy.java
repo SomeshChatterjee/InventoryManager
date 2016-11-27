@@ -5,11 +5,13 @@ package iml.Database.TableStrategies;
 
 import Logger.EventLogger;
 import Logger.EventLoggerCodes;
+import Logger.ExitProgram;
 import iml.Database.Codes.ColumnNames;
 import iml.Database.Codes.TableNames;
 import iml.DisplayMessages;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -183,6 +185,32 @@ public class IncomingTableStrategy implements ITableStrategy
         return result.toArray(new Object[result.size()][NumberOfColumns]);
     }
     
+    @Override
+    public Object[] GetObjectArrayFromJSONArray(JSONArray jsonArray)
+    {
+        Object[] result = new Object[NumberOfColumns];
+        if (jsonArray.size() != NumberOfColumns)
+        {
+            ExitProgram.ExitProgramWith("IncomingStrategy", "Count mismatch in GetObjectArrayFromJSONArray. Expected: " + NumberOfColumns + " but was " + jsonArray.size(), null);
+        }
+        result[0] = Integer.parseInt((String) jsonArray.get(0));
+        result[1] = (String) jsonArray.get(1);
+        result[2] = (String) jsonArray.get(2);
+        result[3] = (String) jsonArray.get(3);
+        result[4] = Float.parseFloat((String) jsonArray.get(4));
+        result[5] = Float.parseFloat((String) jsonArray.get(5));
+        result[6] = Float.parseFloat((String) jsonArray.get(6));
+        result[7] = (String) jsonArray.get(7);
+        result[8] = (String) jsonArray.get(8);
+        result[9] = (String) jsonArray.get(9);
+        result[10] = (String) jsonArray.get(10);
+        result[11] = (String) jsonArray.get(11);
+        result[12] = (String) jsonArray.get(12);
+        result[13] = (String) jsonArray.get(13);
+        result[14] = (String) jsonArray.get(14);
+        return result;        
+    }    
+    
     private String ConvertValuesToString(Object[] values)
     {
         String valuesInString = "";
@@ -191,6 +219,5 @@ public class IncomingTableStrategy implements ITableStrategy
             valuesInString += value + " ";
         }
         return valuesInString;
-    }    
-    
+    }        
 }

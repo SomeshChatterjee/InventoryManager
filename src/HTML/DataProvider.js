@@ -4,7 +4,7 @@
 
 var DataProvider = (function ()
 {
-    var _dataProvider = parent.DataProviderSQLite;
+    var _dataProvider = DataProviderSQLite;
     //var _dataProvider = DataProviderMock;
     //var _dataProvider = DataProviderNull;
     var _mocHeaderNames = TableHeaderNames.MOCAndQualityCodeHeaderName;
@@ -119,9 +119,9 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.MOC, headerNames.QualityCode]);                
     }
     
-    function SetMOCAndQualityCodeValuesInTable(infoTable, newRow)
+    function SetMOCAndQualityCodeValuesInTable(newRowAdded, newRow)
     {       
-        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetMOCAndQualityCodeData, _dataProvider.UpdateMOCAndQualityCodeData);
+        AddOrUpdateTable(newRowAdded, newRow, _dataProvider.SetMOCAndQualityCodeData, _dataProvider.UpdateMOCAndQualityCodeData);
         _mocAndQualityCodeTable = GetMOCAndQualityCodeTable();
     }            
     
@@ -336,18 +336,18 @@ var DataProvider = (function ()
         row.splice(indexInRow + 1, noOfValuesToRemove);        
     }
     
-    function AddOrUpdateTable(table, newRow, addFunction, updateFunction)
+    function AddOrUpdateTable(newRowAdded, newRow, addFunction, updateFunction)
     {
-        var lastIdInTable = table.Data.TableData.length;
-        var idOfNewRow = newRow[0];
-        if (lastIdInTable < idOfNewRow)
+        if (newRowAdded)
         {
+            alert("Added");
             addFunction(newRow);
         }
         else
         {
-            var valuesInString = DataParser.ConvertToString(newRow);
-            updateFunction(idOfNewRow, valuesInString);
+            alert("Updated");
+            var idOfNewRow = newRow[0];
+            updateFunction(idOfNewRow, newRow);
         }        
     }
     

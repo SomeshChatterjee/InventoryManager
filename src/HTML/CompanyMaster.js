@@ -137,8 +137,8 @@ function CompanyMaster()
         newRow[_companyAddressIndex] = companyAddress;
         newRow[_companyContactIndex] = contact;
         
-        FormHelper.UpdateDataTableWith(_infoCompanyMaster, newRow, userEnteredId);
-        _infoCompanyMaster.SetCompanyMasterData(_infoCompanyMaster, newRow)
+        var newRowAdded = FormHelper.UpdateDataTableWith(_infoCompanyMaster, newRow, userEnteredId);
+        _infoCompanyMaster.SetCompanyMasterData(newRowAdded, newRow)
         SetupForID(false);
         FormHelper.SetupDefaultValues(false);
         $("#CompanyMasterIDInput").attr("disabled", true);  

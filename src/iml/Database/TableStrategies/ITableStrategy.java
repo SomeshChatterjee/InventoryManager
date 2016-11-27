@@ -5,7 +5,7 @@ package iml.Database.TableStrategies;
 
 import iml.Database.Codes.TableNames;
 import java.sql.ResultSet;
-import java.util.List;
+import org.json.simple.JSONArray;
 
 /**
  *
@@ -19,4 +19,5 @@ public interface ITableStrategy
     String ReadQuery();
     String UpdateQuery(int id, Object[] values);
     Object[][] GetValuesFromResultSet(ResultSet resultSet);
+    Object[] GetObjectArrayFromJSONArray(JSONArray jsonArray);
 }

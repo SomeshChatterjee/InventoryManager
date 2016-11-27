@@ -140,8 +140,8 @@ function Outgoing()
         newRow[_transporterContactIndex] = transporterName;
         newRow[_remarksIndex]= remarks;
         
-        FormHelper.UpdateDataTableWith(_infoOutgoing, newRow, userEnteredId);
-        _infoOutgoing.SetOutgoingData(_infoOutgoing, newRow);
+        var newRowAdded = FormHelper.UpdateDataTableWith(_infoOutgoing, newRow, userEnteredId);
+        _infoOutgoing.SetOutgoingData(newRowAdded, newRow);
         SetupDropdowns();
         SetupForID(false);
         SetupEditableComboBox(false);

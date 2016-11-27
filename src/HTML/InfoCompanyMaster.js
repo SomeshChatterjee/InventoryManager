@@ -18,8 +18,8 @@ function InfoCompanyMaster()
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };    
     
-    this.SetCompanyMasterData = function (infoCompanyMaster, newRow)
+    this.SetCompanyMasterData = function (newRowAdded, newRow)
     {
-        DataProvider.SetCompanyMasterValuesInTable(infoCompanyMaster, newRow);
+        DataProvider.SetCompanyMasterValuesInTable(newRowAdded, newRow);
     };
 }

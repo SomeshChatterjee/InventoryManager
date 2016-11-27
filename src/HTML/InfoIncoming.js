@@ -18,9 +18,9 @@ function InfoIncoming()
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };
     
-    this.SetIncomingData = function (infoIncoming, newRow)
+    this.SetIncomingData = function (newRowAdded, newRow)
     {
-        DataProvider.SetIncomingValuesInTable(infoIncoming, newRow);
+        DataProvider.SetIncomingValuesInTable(newRowAdded, newRow);
     };
     
     this.GetMOCAndQualityValuesIndex = DataProvider.GetMOCAndQualityValuesIndex;    
