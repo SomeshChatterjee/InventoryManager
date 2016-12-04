@@ -20,7 +20,7 @@ var ShellFunctions = (function ()
     }              
     
     var MenuExpanderCloser = ["#MenuExpander", "#MenuCloser"];
-    var MenuItemSelector = ["#MenuBodyDasboard", "#MenuBodyIncoming", "#MenuBodyOutgoing", "#MenuBodyCompanyMaster", "#MenuBodyTransporter", "#MenuBodyItemMaster"];
+    var MenuItemSelector = ["#MenuBodyDasboard", "#MenuBodyIncoming", "#MenuBodyOutgoing", "#MenuBodyCompanyMaster", "#MenuBodyTransporter", "#MenuBodyItemMaster", "#MenuBodyAboutIML"];
     
     function RegisterEventHandlers()
     {
@@ -33,6 +33,7 @@ var ShellFunctions = (function ()
         DomFunctions.bind("#MenuBodyCompanyMaster", "click", ShowMenuBodyCompanyMaster);
         DomFunctions.bind("#MenuBodyTransporter", "click", ShowMenuBodyTransporter);
         DomFunctions.bind("#MenuBodyItemMaster", "click", ShowMenuBodyMenuBodyItemMaster);
+        DomFunctions.bind("#MenuBodyAboutIML", "click", ShowMenuBodyAboutIML);
     }
     
     function SetDefaultPage()
@@ -95,6 +96,12 @@ var ShellFunctions = (function ()
         AddClassNameTo("#MenuBodyItemMaster", MenuItemSelector);
         SetMainPageTo("ItemMaster.html");
     }        
+    
+    function ShowMenuBodyAboutIML(e)
+    {
+        AddClassNameTo("#MenuBodyAboutIML", MenuItemSelector);
+        SetMainPageTo("About.html");
+    }            
     
     function AddClassNameTo(addTo, removeFrom)
     {

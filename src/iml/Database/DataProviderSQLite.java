@@ -3,6 +3,8 @@
  */
 package iml.Database;
 
+import Logger.EventLogger;
+import Logger.EventLoggerCodes;
 import iml.Database.TableStrategies.CompanyMasterStrategy;
 import iml.Database.TableStrategies.ITableStrategy;
 import iml.Database.TableStrategies.IncomingTableStrategy;
@@ -23,6 +25,7 @@ public class DataProviderSQLite
     private final ITableStrategy _companyMasterTableStrategy;
     private final ITableStrategy _transporterTableStrategy;
     private final ITableStrategy _mocQualityTableStrategy;
+    private final EventLogger _eventLogger;
     private final Parser _parser;
 
     public DataProviderSQLite()
@@ -32,6 +35,7 @@ public class DataProviderSQLite
         _companyMasterTableStrategy = new CompanyMasterStrategy();
         _transporterTableStrategy = new TransporterStrategy();
         _mocQualityTableStrategy = new MOCQualityStrategy();
+        _eventLogger = EventLogger.GetLogger();
         _parser = new Parser();
         _tableManager = new TableManager();
         _tableManager.CreateTableIfNotExist(_incomingTableStrategy);
@@ -44,7 +48,7 @@ public class DataProviderSQLite
     public String GetIncomingData()
     {
         Object[][] result = _tableManager.ReadRecords(_incomingTableStrategy);
-        return _parser.ConvertToString(result);
+        return  _parser.ConvertToString(result);
     }
     
     public String GetMOCAndQualityCode()

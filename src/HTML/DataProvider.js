@@ -35,7 +35,7 @@ var DataProvider = (function ()
         return GetTable(inputData, tableHeaders);        
     }
     
-    function SetIncomingValuesInTable(infoTable, newRow)
+    function SetIncomingValuesInTable(infoTable, newRowAdded, newRow)
     {
         newRow = newRow.slice(0); // shallow copy of array so that updating newRow doesn't update i/p
         var headerNames = TableHeaderNames.IncomingHeaderNames;
@@ -51,10 +51,10 @@ var DataProvider = (function ()
         var matchingTransporterId = GetTransporterId(newRow, indexOfTransporterNameInNewRow);
         
         SubstituteValues(newRow, indexOfCompanyNameInNewRow, matchingCompanyId, 1);
-        SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
-        SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
+        SubstituteValues(newRow, indexOfMOCInNewRow - 1, matchingMOCId, 1);
+        SubstituteValues(newRow, indexOfTransporterNameInNewRow - 2, matchingTransporterId, 2);
         
-        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetIncomingData, _dataProvider.UpdateIncomingData);
+        AddOrUpdateTable(newRowAdded, newRow, _dataProvider.SetIncomingData, _dataProvider.UpdateIncomingData);
     }
     
     
@@ -77,7 +77,7 @@ var DataProvider = (function ()
         return GetTable(inputData, tableHeaders);        
     }    
     
-    function SetOutgoingValuesInTable(infoTable, newRow)
+    function SetOutgoingValuesInTable(infoTable, newRowAdded, newRow)
     {
         newRow = newRow.slice(0); // shallow copy of array so that updating newRow doesn't update i/p
         var headerNames = TableHeaderNames.OutgoingHeaderNames;
@@ -93,10 +93,10 @@ var DataProvider = (function ()
         var matchingTransporterId = GetTransporterId(newRow, indexOfTransporterNameInNewRow);
         
         SubstituteValues(newRow, indexOfCompanyNameInNewRow, matchingCompanyId, 1);
-        SubstituteValues(newRow, indexOfMOCInNewRow, matchingMOCId, 1);
-        SubstituteValues(newRow, indexOfTransporterNameInNewRow, matchingTransporterId, 2);
+        SubstituteValues(newRow, indexOfMOCInNewRow - 1, matchingMOCId, 1);
+        SubstituteValues(newRow, indexOfTransporterNameInNewRow - 2, matchingTransporterId, 2);
         
-        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetOutgoingData, _dataProvider.UpdateOutgoingData);
+        AddOrUpdateTable(newRowAdded, newRow, _dataProvider.SetOutgoingData, _dataProvider.UpdateOutgoingData);
     }    
     
     function GetCompanyMasterTable()
@@ -106,9 +106,9 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.CompanyName, headerNames.CompanyAddress, headerNames.Contact]);        
     }
     
-    function SetCompanyMasterValuesInTable(infoTable, newRow)
+    function SetCompanyMasterValuesInTable(newRowAdded, newRow)
     {       
-        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetCompanyMasterData, _dataProvider.UpdateCompanyMasterData);
+        AddOrUpdateTable(newRowAdded, newRow, _dataProvider.SetCompanyMasterData, _dataProvider.UpdateCompanyMasterData);
         _companyMasterTable = GetCompanyMasterTable();
     }        
     
@@ -132,9 +132,9 @@ var DataProvider = (function ()
         return GetTable(inputData, [headerNames.ID, headerNames.TransporterName, headerNames.TransporterAddress, headerNames.Contact]);                        
     }
     
-    function SetTransporterValuesInTable(infoTable, newRow)
+    function SetTransporterValuesInTable(newRowAdded, newRow)
     {       
-        AddOrUpdateTable(infoTable, newRow, _dataProvider.SetTransporterValuesInTable, _dataProvider.UpdateTransporterData);
+        AddOrUpdateTable(newRowAdded, newRow, _dataProvider.SetTransporterValuesInTable, _dataProvider.UpdateTransporterData);
         _transporterTable = GetTransporterTable();
     }
     
@@ -142,7 +142,7 @@ var DataProvider = (function ()
     {
         var numberOfRows = inputData.length;
         var initializeDummy = numberOfRows === 0 ? true : false;
-        numberOfRows = 1;
+        numberOfRows = initializeDummy ? 1 : numberOfRows;
         var table = new TableStructure(numberOfRows);
         table.TableHeader = header;
         var numberOfColumns = header.length;
@@ -185,7 +185,7 @@ var DataProvider = (function ()
             var foundJ = InvalidIndex;            
             for (var j = 0; j < sourceTable.length; j++)
             {
-                if (destTable[i][foreignKey] === sourceTable[j][key])
+                if (destTable[i][foreignKey] == sourceTable[j][key])
                 {
                     found = true;
                     foundJ = j;
@@ -287,7 +287,7 @@ var DataProvider = (function ()
         for (var i = 0; i < values.length; ++i)
         {
             var row = values[i];
-            if (valueToSearch === row[indexInValuesTable])
+            if (valueToSearch == row[indexInValuesTable])
             {
                 return row[indexToReturn];
             }
@@ -297,15 +297,14 @@ var DataProvider = (function ()
     
     function GetMatchingMOCId(newRow, indexOfMOCInNewRow, indexOfQualityInNewRow)
     {
-        var mocData = _dataProvider.GetMOCAndQualityCode();     
-        
+        var mocData = _dataProvider.GetMOCAndQualityCode();             
         var MOC = newRow[indexOfMOCInNewRow];
         var quality = newRow[indexOfQualityInNewRow];
         for (var i = 0; i < mocData.length; i++)
         {
-            if (MOC === mocData[1] && quality === mocData[2])
+            if (MOC == mocData[i][1] && quality == mocData[i][2])
             {
-                return mocData[0];
+                return mocData[i][0];
             }
         }
         return InvalidIndex;
@@ -332,7 +331,7 @@ var DataProvider = (function ()
     
     function SubstituteValues(row, indexInRow, valueToSubstitute, noOfValuesToRemove)
     {
-        row[indexInRow] = valueToSubstitute;
+        row[indexInRow] = String(valueToSubstitute);
         row.splice(indexInRow + 1, noOfValuesToRemove);        
     }
     
@@ -340,12 +339,10 @@ var DataProvider = (function ()
     {
         if (newRowAdded)
         {
-            alert("Added");
             addFunction(newRow);
         }
         else
         {
-            alert("Updated");
             var idOfNewRow = newRow[0];
             updateFunction(idOfNewRow, newRow);
         }        

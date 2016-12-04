@@ -141,7 +141,7 @@ function Outgoing()
         newRow[_remarksIndex]= remarks;
         
         var newRowAdded = FormHelper.UpdateDataTableWith(_infoOutgoing, newRow, userEnteredId);
-        _infoOutgoing.SetOutgoingData(newRowAdded, newRow);
+        _infoOutgoing.SetOutgoingData(_infoOutgoing, newRowAdded, newRow);
         SetupDropdowns();
         SetupForID(false);
         SetupEditableComboBox(false);
@@ -243,7 +243,8 @@ function Outgoing()
             ResetIDAndDisableField(nextId);
             return;
         }
-        var indexOfId = ids.indexOf(userEditedId);
+        var indexOfId = FormHelper.GetIndexOfFirstByNumberTypeThenOrigType(ids, userEditedId);
+        alert(indexOfId);
         SetValuesForId(indexOfId);
     }
     

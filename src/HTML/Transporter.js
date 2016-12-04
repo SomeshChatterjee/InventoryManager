@@ -78,7 +78,7 @@ function Transporter()
             ResetIDAndDisableField(nextId);
             return;
         }
-        var indexOfId = ids.indexOf(userEditedId);
+        var indexOfId = FormHelper.GetIndexOfFirstByNumberTypeThenOrigType(ids, userEditedId);
         SetValuesForId(indexOfId);
     }    
     

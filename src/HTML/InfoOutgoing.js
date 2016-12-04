@@ -18,9 +18,9 @@ function InfoOutgoing()
         return FormHelper.GetDataValuesFromTable(this.Data, index);
     };
     
-    this.SetOutgoingData = function (newRowAdded, newRow)
+    this.SetOutgoingData = function (tableData, newRowAdded, newRow)
     {
-        DataProvider.SetOutgoingValuesInTable(newRowAdded, newRow);
+        DataProvider.SetOutgoingValuesInTable(tableData, newRowAdded, newRow);
     };
     
     

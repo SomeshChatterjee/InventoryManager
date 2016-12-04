@@ -398,7 +398,7 @@ var FormHelper = (function ()
             {
                 var valueInArray = arrays[j][i];
                 var valueToVerify = values[j];
-                if (valueInArray.toUpperCase() !== valueToVerify.toUpperCase())
+                if (String(valueInArray).toUpperCase() !== String(valueToVerify).toUpperCase())
                 {
                     valueMatched = false;
                     break;
@@ -493,7 +493,7 @@ var FormHelper = (function ()
     function CheckIfInputHasValue(input)
     {
         return ((input === "") || 
-                (input.toUpperCase() === NaText) ||
+                (String(input).toUpperCase() === NaText) ||
                 (!input.trim()));
     }
     
@@ -524,6 +524,16 @@ var FormHelper = (function ()
         );        
     }
     
+    function GetIndexOfFirstByNumberTypeThenOrigType(idList, idToFind)
+    {
+        var result = idList.indexOf(Number(idToFind));
+        if (result === -1)
+        {
+            result = idList.indexOf(idToFind);
+        }
+        return result;
+    }
+    
     return {
         SetupDropdown : SetupDropdown,
         GetDataValuesFromTable: GetDataValuesFromTable,
@@ -544,7 +554,8 @@ var FormHelper = (function ()
         MergeArrayWithMultiValuesForCombinedFiled: MergeArrayWithMultiValuesForCombinedFiled,
         GetIndexOfValueFromTable: GetIndexOfValueFromTable,
         CheckIfInputHasValue: CheckIfInputHasValue,
-        SetupDateFilterOnTable: SetupDateFilterOnTable
+        SetupDateFilterOnTable: SetupDateFilterOnTable,
+        GetIndexOfFirstByNumberTypeThenOrigType: GetIndexOfFirstByNumberTypeThenOrigType
     };
     
 })();

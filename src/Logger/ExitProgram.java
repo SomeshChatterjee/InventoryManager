@@ -16,7 +16,7 @@ public class ExitProgram
     public static void ExitProgramWith(String className, String exceptionMessage, Exception ex)
     {
         java.util.logging.Logger.getLogger(className).log(Level.SEVERE, exceptionMessage, ex);
-        _eventLogger.LogToFile(EventLoggerCodes.Error, exceptionMessage + "\n" + ex);
+        _eventLogger.LogToFile(EventLoggerCodes.Error, "ClassName: " + className + "Exception: " + exceptionMessage + "\n" + ex);
         DisplayMessages.DisplayAlert(exceptionMessage + "\n" + ex);
         System.exit(0);
     }
